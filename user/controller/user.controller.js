@@ -66,4 +66,17 @@ const login = async (req, res) => {
 
 }
 
-module.exports = [register, login];
+const logout = async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        await blacklisttokenModel.create({ token });
+        res.clearCookie('token');
+        res.send({ message: 'User logged out successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+module.exports = {register, login, logout};
+
+
